@@ -26,48 +26,39 @@ package javafun;
 import java.util.Scanner;
 
 /**
+ * Reference Materials:
+ *
+ * System properties:
+ *  https://docs.oracle.com/javase/tutorial/essential/environment/sysprop.html
+ * String Formatting:
+ *  https://dzone.com/articles/java-string-format-examples
+ * Try with resources:
+ *  https://www.baeldung.com/java-try-with-resources
  *
  * @author Anthony Williams
  */
 public class JavaFun {
+    private static final String GREETING = "Ello! 😊";
+    private static final String PROMPT_TEXT_USERNAME = "Input a username and press [Enter]";
+
     /**
-     * Reference Materials:
-     *
-     * System properties:
-     *  https://docs.oracle.com/javase/tutorial/essential/environment/sysprop.html
-     * String Formatting:
-     *  https://dzone.com/articles/java-string-format-examples
-     * Try with resources:
-     *  https://www.baeldung.com/java-try-with-resources
-     *
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         String currentCodeLocation = "[javafun.JavaFun.main()]";
-        String greeting = currentCodeLocation.concat(" Ello! 😊");
-        String usernamePrompt = "Input a username and press [Enter]";
+        String locationAndGreeting = currentCodeLocation.concat(" ").concat(GREETING);
         String username;
-        // NOTE: the below var is equal to a %n in formatted string
+        // NOTE: Variable below and %n in formatted strings are equal
         // String newLineStr = System.getProperty("line.separator");
 
-        System.out.println("Running...");
-        System.out.println(greeting);
-        System.out.println(usernamePrompt);
+        System.out.println(locationAndGreeting);
+        System.out.println(JavaFun.PROMPT_TEXT_USERNAME);
 
-//        // NOTE: traditional way
-//        Scanner userInput = new Scanner(System.in);
-//        username = userInput.next();
-//        // NOTE: always close scanners
-//        userInput.close();
-
-        // NOTE: new way, try with resources
+        // Update username with user input (using try with resources)
         try (Scanner userInput = new Scanner(System.in)) {
             username = userInput.next();
         }
 
-        String formattedUsername = String.format("\tFormatted: %s%n", username);
-
-        System.out.printf("Username='%s'%n", username);
-        System.out.print(formattedUsername);
+        System.out.printf("Username = '%s'%n", username);
     }
 }
