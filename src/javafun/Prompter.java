@@ -23,6 +23,8 @@
  */
 package javafun;
 
+import java.io.InputStream;
+import java.io.PrintWriter;
 import java.util.Scanner;
 
 /**
@@ -33,29 +35,45 @@ import java.util.Scanner;
 public class Prompter {
 
     /**
+     * This is a convenience method to use standard input and output when prompting
+     *
+     * @param prompt
+     * @param errorMsg
+     * @return
+     */
+    public static PrompterStringResult PromptUserForString(String prompt, String errorMsg) {
+        return PromptUserForString(System.in, new PrintWriter(System.out), prompt, errorMsg);
+    }
+
+    /**
      * This method is used to obtain a string value from the user
      *
+     * @param inputStream The stream to read input from (usually System.in)
+     * @param writer The writer to write output to (usually created with System.out)
      * @param prompt The string message to display to user (to prompt for input)
      * @param errorMsg The string message to display to user when response is invalid
      * @return A PrompterStringResult containing user response information
      */
-    public static PrompterStringResult PromptUserForString(String prompt, String errorMsg) {
+    public static PrompterStringResult PromptUserForString(
+            InputStream inputStream,
+            PrintWriter writer,
+            String prompt,
+            String errorMsg) {
         String userEntry = "";
         int attempts = 0;
 
-        // NOTE: prepare to obtain user input
-        try (Scanner userInputScanner = new Scanner(System.in)) {
+        try (Scanner userInputScanner = new Scanner(inputStream)) {
             // NOTE: keep trying as long as long as value is empty
             while (userEntry.length() < 1) {
                 attempts++;
 
                 // NOTE: validation failed at least once, display error
                 if (attempts > 1) {
-                    System.out.println(errorMsg);
+                    writer.println(errorMsg);
                 }
 
                 // NOTE: display prompt and obtain (wait for) next input
-                System.out.println(prompt);
+                writer.println(prompt);
                 userEntry = userInputScanner.nextLine();
             }
         }
