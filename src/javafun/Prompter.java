@@ -25,6 +25,7 @@ package javafun;
 
 import javafun.models.PrompterStringResult;
 import java.io.PrintWriter;
+import javafun.models.PrompterIntResult;
 
 /**
  * This class is used to obtain input from the user
@@ -77,4 +78,76 @@ public class Prompter {
 
         return new PrompterStringResult(userEntry, attempts);
     }
+    
+    public static PrompterIntResult PromptUserForInt(String prompt, String errorMsg) {
+        return PromptUserForInt(new ConsoleScanner(System.in), new PrintWriter(System.out), prompt, errorMsg);
+    }
+
+    public static PrompterIntResult PromptUserForInt(
+            ConsoleScanner reader,
+            PrintWriter writer,
+            String prompt,
+            String errorMsg) {
+        int userEnteredInt = Integer.MIN_VALUE;
+        int attempts = 0;
+
+        // NOTE: keep trying as long as long as value is invalid
+        while (userEnteredInt == Integer.MIN_VALUE) {
+            attempts++;
+
+            // NOTE: display prompt and obtain (wait for) next input
+            writer.println(prompt);
+            String userEnteredLine = reader.nextLine();
+
+            try {
+                int potentialInt = Integer.parseInt(userEnteredLine);
+                userEnteredInt = potentialInt;
+            } catch (NumberFormatException numberFormatEx) {
+                // NOTE: validation failed, display error
+                writer.println(errorMsg);
+            }
+        }
+
+        return new PrompterIntResult(userEnteredInt, attempts);
+    }
+
+//    public static PrompterIntResult PromptUserForChoice(String prompt, String errorMsg, String[] choices) {
+//        return PromptUserForChoice(new ConsoleScanner(System.in), new PrintWriter(System.out), prompt, errorMsg, choices);
+//    }
+//
+//    public static PrompterIntResult PromptUserForChoice(
+//            ConsoleScanner reader,
+//            PrintWriter writer,
+//            String prompt,
+//            String errorMsg,
+//            String[] choices) {
+//        int numberOfChoices = choices.length - 1;
+//        int userChoice = -1;
+//        int attempts = 0;
+//
+//        // NOTE: keep trying as long as long as value is invalid
+//        while (userChoice == -1) {
+//            attempts++;
+//
+//            // NOTE: display prompt and obtain (wait for) next input
+//            writer.println(prompt);
+//            String potentialChoice = reader.nextLine();
+//
+//            try {
+//                int potentialIndex = Integer.parseInt(potentialChoice);
+//
+//                if (potentialIndex >= 0 && potentialIndex <= numberOfChoices) {
+//                    userChoice = potentialIndex;
+//                } else {
+//                    // NOTE: validation failed, display error
+//                    writer.println(errorMsg);
+//                }
+//            } catch (NumberFormatException numberFormatEx) {
+//                // NOTE: validation failed, display error
+//                writer.println(errorMsg);
+//            }
+//        }
+//
+//        return new PrompterIntResult(userChoice, attempts);
+//    }
 }

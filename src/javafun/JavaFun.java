@@ -23,6 +23,7 @@
  */
 package javafun;
 
+import javafun.models.PrompterIntResult;
 import javafun.models.PrompterStringResult;
 
 /**
@@ -36,8 +37,13 @@ import javafun.models.PrompterStringResult;
  */
 public class JavaFun {
 
+    private static final String[] CHOICES_SKILL_LEVEL = new String[]{"Untrained", "Trained", "Skilled", "Expert"};
+    private static final String ERROR_INVALID_AGE = "Age must be an integer number (e.g.: 1, 15, 50...)";
+    private static final String ERROR_INVALID_SKILLLEVEL = "Please select a valid skill level";
     private static final String ERROR_USERNAME_EMPTY = "Username cannot be empty";
     private static final String GREETING = "Ello! 😊";
+    private static final String PROMPT_TEXT_SKILLLEVEL = "Please enter a skill level number from the list and press [Enter]";
+    private static final String PROMPT_TEXT_AGE = "Input an age (integer) and press [Enter]";
     private static final String PROMPT_TEXT_USERNAME = "Input a username and press [Enter]";
 
     /**
@@ -50,13 +56,13 @@ public class JavaFun {
         // String newLineStr = System.getProperty("line.separator");
 
         System.out.println(locationAndGreeting);
-        PrompterStringResult result = Prompter.PromptUserForString(PROMPT_TEXT_USERNAME, ERROR_USERNAME_EMPTY);
-        String username = result.getValue();
-        System.out.printf(
-                "\tUsername = '%s'%n\tIncorrect Attempts = %d%n\tTotalAttempts = %d%n",
-                username,
-                result.getAttempts() - 1,
-                result.getAttempts()
-        );
+        PrompterStringResult usernameResult = Prompter.PromptUserForString(PROMPT_TEXT_USERNAME, ERROR_USERNAME_EMPTY);
+        String username = usernameResult.getValue();
+        PrompterIntResult ageResult = Prompter.PromptUserForInt(PROMPT_TEXT_AGE, ERROR_INVALID_AGE);
+        int age = ageResult.getValue();
+//        PrompterIntResult skillLevelResult = Prompter.PromptUserForChoice(
+//                PROMPT_TEXT_SKILLLEVEL,
+//                ERROR_INVALID_SKILLLEVEL,
+//                CHOICES_SKILL_LEVEL);
     }
 }
