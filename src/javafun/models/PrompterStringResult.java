@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package javafun;
+package javafun.models;
 
 /**
  * Model used to represent information regarding a user response (as a string) to a prompt
@@ -29,6 +29,7 @@ package javafun;
  * @author Anthony Williams
  */
 public class PrompterStringResult {
+
     private final int attempts;
     private final String value;
 
@@ -36,7 +37,7 @@ public class PrompterStringResult {
      * @param value The string value obtained from the user
      * @param attempts The number of attempts (including the final) it took to obtain a value from the user
      */
-    PrompterStringResult(String value, int attempts) {
+    public PrompterStringResult(String value, int attempts) {
         this.value = value;
         this.attempts = attempts;
     }

@@ -23,9 +23,8 @@
  */
 package javafun;
 
-import java.io.InputStream;
+import javafun.models.PrompterStringResult;
 import java.io.PrintWriter;
-import java.util.Scanner;
 
 /**
  * This class is used to obtain input from the user
@@ -42,40 +41,38 @@ public class Prompter {
      * @return
      */
     public static PrompterStringResult PromptUserForString(String prompt, String errorMsg) {
-        return PromptUserForString(System.in, new PrintWriter(System.out), prompt, errorMsg);
+        return PromptUserForString(new ConsoleScanner(System.in), new PrintWriter(System.out), prompt, errorMsg);
     }
 
     /**
      * This method is used to obtain a string value from the user
      *
-     * @param inputStream The stream to read input from (usually System.in)
-     * @param writer The writer to write output to (usually created with System.out)
+     * @param reader A <code>ConsoleScanner</code> to read input from (usually created with System.in)
+     * @param writer A <code>PrintWriter</code> to write output to (usually created with System.out)
      * @param prompt The string message to display to user (to prompt for input)
      * @param errorMsg The string message to display to user when response is invalid
      * @return A PrompterStringResult containing user response information
      */
     public static PrompterStringResult PromptUserForString(
-            InputStream inputStream,
+            ConsoleScanner reader,
             PrintWriter writer,
             String prompt,
             String errorMsg) {
         String userEntry = "";
         int attempts = 0;
 
-        try (Scanner userInputScanner = new Scanner(inputStream)) {
-            // NOTE: keep trying as long as long as value is empty
-            while (userEntry.length() < 1) {
-                attempts++;
+        // NOTE: keep trying as long as long as value is empty
+        while (userEntry.length() < 1) {
+            attempts++;
 
-                // NOTE: validation failed at least once, display error
-                if (attempts > 1) {
-                    writer.println(errorMsg);
-                }
-
-                // NOTE: display prompt and obtain (wait for) next input
-                writer.println(prompt);
-                userEntry = userInputScanner.nextLine();
+            // NOTE: validation failed at least once, display error
+            if (attempts > 1) {
+                writer.println(errorMsg);
             }
+
+            // NOTE: display prompt and obtain (wait for) next input
+            writer.println(prompt);
+            userEntry = reader.nextLine();
         }
 
         return new PrompterStringResult(userEntry, attempts);

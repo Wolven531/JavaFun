@@ -23,6 +23,8 @@
  */
 package javafun;
 
+import javafun.models.PrompterStringResult;
+
 /**
  * Reference Materials:
  *
