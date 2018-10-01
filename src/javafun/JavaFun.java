@@ -29,9 +29,13 @@ import javafun.models.PrompterStringResult;
 /**
  * Reference Materials:
  *
- * System properties: https://docs.oracle.com/javase/tutorial/essential/environment/sysprop.html String Formatting:
- * https://dzone.com/articles/java-string-format-examples Try with resources:
- * https://www.baeldung.com/java-try-with-resources
+ * System properties: https://docs.oracle.com/javase/tutorial/essential/environment/sysprop.html
+ *
+ * String Formatting: https://dzone.com/articles/java-string-format-examples
+ *
+ * Try with resources: * https://www.baeldung.com/java-try-with-resources
+ *
+ * Line endings: Get-ChildItem -Path . -Filter '*.*' -Recurse | ForEach-Object { dos2unix.exe $_.FullName }
  *
  * @author Anthony Williams
  */
