@@ -55,10 +55,10 @@ public class Prompter {
      * @return A PrompterStringResult containing user response information
      */
     public static PrompterStringResult PromptUserForString(
-            ConsoleScanner reader,
-            PrintWriter writer,
-            String prompt,
-            String errorMsg) {
+        ConsoleScanner reader,
+        PrintWriter writer,
+        String prompt,
+        String errorMsg) {
         String userEntry = "";
         int attempts = 0;
 
@@ -78,16 +78,16 @@ public class Prompter {
 
         return new PrompterStringResult(userEntry, attempts);
     }
-    
+
     public static PrompterIntResult PromptUserForInt(String prompt, String errorMsg) {
         return PromptUserForInt(new ConsoleScanner(System.in), new PrintWriter(System.out), prompt, errorMsg);
     }
 
     public static PrompterIntResult PromptUserForInt(
-            ConsoleScanner reader,
-            PrintWriter writer,
-            String prompt,
-            String errorMsg) {
+        ConsoleScanner reader,
+        PrintWriter writer,
+        String prompt,
+        String errorMsg) {
         int userEnteredInt = Integer.MIN_VALUE;
         int attempts = 0;
 
@@ -102,6 +102,46 @@ public class Prompter {
             try {
                 int potentialInt = Integer.parseInt(userEnteredLine);
                 userEnteredInt = potentialInt;
+            } catch (NumberFormatException numberFormatEx) {
+                // NOTE: validation failed, display error
+                writer.println(errorMsg);
+            }
+        }
+
+        return new PrompterIntResult(userEnteredInt, attempts);
+    }
+
+    public static PrompterIntResult PromptUserForIntInRange(String prompt, String errorMsg, int min, int max) {
+        return PromptUserForIntInRange(new ConsoleScanner(System.in), new PrintWriter(System.out), prompt, errorMsg, min, max);
+    }
+
+    public static PrompterIntResult PromptUserForIntInRange(
+        ConsoleScanner reader,
+        PrintWriter writer,
+        String prompt,
+        String errorMsg,
+        int min,
+        int max) {
+        int userEnteredInt = Integer.MIN_VALUE;
+        int attempts = 0;
+
+        // NOTE: keep trying as long as long as value is invalid
+        while (userEnteredInt == Integer.MIN_VALUE) {
+            attempts++;
+
+            // NOTE: display prompt and obtain (wait for) next input
+            writer.println(prompt);
+            String userEnteredLine = reader.nextLine();
+
+            try {
+                int potentialInt = Integer.parseInt(userEnteredLine);
+
+                if (potentialInt >= min && potentialInt <= max) {
+                    userEnteredInt = potentialInt;
+                } else {
+                    // NOTE: validation failed, display error
+                    writer.println(errorMsg);
+                }
             } catch (NumberFormatException numberFormatEx) {
                 // NOTE: validation failed, display error
                 writer.println(errorMsg);
