@@ -150,4 +150,192 @@ public class TestPrompter {
         assertEquals(50, actual.getValue());
         assertEquals(3, actual.getAttempts());
     }
+
+    @Test
+    public void PromptUserForIntInRange_WhenProvidedValidValueOnFirstAttempt_ShouldReturnPrompterIntResult() throws IOException {
+        // Arrange
+        PrompterIntResult actual;
+        when(mockScanner.nextLine())
+            .thenReturn("3");
+
+        // Act
+        actual = Prompter.PromptUserForIntInRange(mockScanner, mockPrintWriter, "prompt for val", "err", 0, 100);
+
+        // Assert
+        verify(mockScanner, times(1)).nextLine();
+        verifyNoMoreInteractions(mockScanner);
+
+        verify(mockPrintWriter, times(1)).println("prompt for val");
+        verify(mockPrintWriter, never()).println("err");
+        verifyNoMoreInteractions(mockPrintWriter);
+
+        assertEquals(3, actual.getValue());
+        assertEquals(1, actual.getAttempts());
+    }
+
+    @Test
+    public void PromptUserForIntInRange_WhenProvidedNonNumberOnFirstAttempt_ShouldReturnPrompterIntResult() throws IOException {
+        // Arrange
+        PrompterIntResult actual;
+        when(mockScanner.nextLine())
+            .thenReturn("a")
+            .thenReturn("3");
+
+        // Act
+        actual = Prompter.PromptUserForIntInRange(mockScanner, mockPrintWriter, "prompt for val", "err", 0, 100);
+
+        // Assert
+        verify(mockScanner, times(2)).nextLine();
+        verifyNoMoreInteractions(mockScanner);
+
+        InOrder inOrder = Mockito.inOrder(mockPrintWriter);
+        inOrder.verify(mockPrintWriter).println("prompt for val");
+        inOrder.verify(mockPrintWriter).println("err");
+        inOrder.verify(mockPrintWriter).println("prompt for val");
+        verifyNoMoreInteractions(mockPrintWriter);
+
+        assertEquals(3, actual.getValue());
+        assertEquals(2, actual.getAttempts());
+    }
+
+    @Test
+    public void PromptUserForIntInRange_WhenProvidedTooLowNumberOnFirstAttempt_ShouldReturnPrompterIntResult() throws IOException {
+        // Arrange
+        PrompterIntResult actual;
+        when(mockScanner.nextLine())
+            .thenReturn("5")
+            .thenReturn("50");
+
+        // Act
+        actual = Prompter.PromptUserForIntInRange(mockScanner, mockPrintWriter, "prompt for val", "err", 10, 100);
+
+        // Assert
+        verify(mockScanner, times(2)).nextLine();
+        verifyNoMoreInteractions(mockScanner);
+
+        InOrder inOrder = Mockito.inOrder(mockPrintWriter);
+        inOrder.verify(mockPrintWriter).println("prompt for val");
+        inOrder.verify(mockPrintWriter).println("err");
+        inOrder.verify(mockPrintWriter).println("prompt for val");
+        verifyNoMoreInteractions(mockPrintWriter);
+
+        assertEquals(50, actual.getValue());
+        assertEquals(2, actual.getAttempts());
+    }
+
+    @Test
+    public void PromptUserForIntInRange_WhenProvidedTooHighNumberOnFirstAttempt_ShouldReturnPrompterIntResult() throws IOException {
+        // Arrange
+        PrompterIntResult actual;
+        when(mockScanner.nextLine())
+            .thenReturn("100")
+            .thenReturn("20");
+
+        // Act
+        actual = Prompter.PromptUserForIntInRange(mockScanner, mockPrintWriter, "prompt for val", "err", 10, 50);
+
+        // Assert
+        verify(mockScanner, times(2)).nextLine();
+        verifyNoMoreInteractions(mockScanner);
+
+        InOrder inOrder = Mockito.inOrder(mockPrintWriter);
+        inOrder.verify(mockPrintWriter).println("prompt for val");
+        inOrder.verify(mockPrintWriter).println("err");
+        inOrder.verify(mockPrintWriter).println("prompt for val");
+        verifyNoMoreInteractions(mockPrintWriter);
+
+        assertEquals(20, actual.getValue());
+        assertEquals(2, actual.getAttempts());
+    }
+
+    @Test
+    public void PromptUserForIntInRange_WhenProvidedMaxValueOnFirstAttempt_ShouldReturnPrompterIntResult() throws IOException {
+        // Arrange
+        PrompterIntResult actual;
+        when(mockScanner.nextLine())
+            .thenReturn("100");
+
+        // Act
+        actual = Prompter.PromptUserForIntInRange(mockScanner, mockPrintWriter, "prompt for val", "err", 0, 100);
+
+        // Assert
+        verify(mockScanner, times(1)).nextLine();
+        verifyNoMoreInteractions(mockScanner);
+
+        verify(mockPrintWriter, times(1)).println("prompt for val");
+        verify(mockPrintWriter, never()).println("err");
+        verifyNoMoreInteractions(mockPrintWriter);
+
+        assertEquals(100, actual.getValue());
+        assertEquals(1, actual.getAttempts());
+    }
+
+    @Test
+    public void PromptUserForIntInRange_WhenProvidedMinValueOnFirstAttempt_ShouldReturnPrompterIntResult() throws IOException {
+        // Arrange
+        PrompterIntResult actual;
+        when(mockScanner.nextLine())
+            .thenReturn("0");
+
+        // Act
+        actual = Prompter.PromptUserForIntInRange(mockScanner, mockPrintWriter, "prompt for val", "err", 0, 100);
+
+        // Assert
+        verify(mockScanner, times(1)).nextLine();
+        verifyNoMoreInteractions(mockScanner);
+
+        verify(mockPrintWriter, times(1)).println("prompt for val");
+        verify(mockPrintWriter, never()).println("err");
+        verifyNoMoreInteractions(mockPrintWriter);
+
+        assertEquals(0, actual.getValue());
+        assertEquals(1, actual.getAttempts());
+    }
+
+    @Test
+    public void PromptUserForIntInRange_WhenProvidedNegativeValueOnFirstAttempt_ShouldReturnPrompterIntResult() throws IOException {
+        // Arrange
+        PrompterIntResult actual;
+        when(mockScanner.nextLine())
+            .thenReturn("-25");
+
+        // Act
+        actual = Prompter.PromptUserForIntInRange(mockScanner, mockPrintWriter, "prompt for val", "err", -100, 100);
+
+        // Assert
+        verify(mockScanner, times(1)).nextLine();
+        verifyNoMoreInteractions(mockScanner);
+
+        verify(mockPrintWriter, times(1)).println("prompt for val");
+        verify(mockPrintWriter, never()).println("err");
+        verifyNoMoreInteractions(mockPrintWriter);
+
+        assertEquals(-25, actual.getValue());
+        assertEquals(1, actual.getAttempts());
+    }
+
+    @Test
+    public void PromptUserForIntInRange_WhenProvidedDecimalValueOnFirstAttempt_ShouldReturnPrompterIntResult() throws IOException {
+        // Arrange
+        PrompterIntResult actual;
+        when(mockScanner.nextLine())
+            .thenReturn("2.5")
+            .thenReturn("25");
+
+        // Act
+        actual = Prompter.PromptUserForIntInRange(mockScanner, mockPrintWriter, "prompt for val", "err", -100, 100);
+
+        // Assert
+        verify(mockScanner, times(2)).nextLine();
+        verifyNoMoreInteractions(mockScanner);
+
+        InOrder inOrder = Mockito.inOrder(mockPrintWriter);
+        inOrder.verify(mockPrintWriter).println("prompt for val");
+        inOrder.verify(mockPrintWriter).println("err");
+        inOrder.verify(mockPrintWriter).println("prompt for val");
+        verifyNoMoreInteractions(mockPrintWriter);
+
+        assertEquals(25, actual.getValue());
+        assertEquals(2, actual.getAttempts());
+    }
 }
