@@ -37,11 +37,13 @@ import org.mockito.Mockito;
 import static org.mockito.Mockito.*;
 
 /**
+ * NOTE: This class must END WITH with 'Test' instead of START WITH, or NetBeans fails to find it
+ *
  * Mockito version from: https://mvnrepository.com/artifact/org.mockito/mockito-all/2.0.2-beta
  *
  * @author Anthony Williams
  */
-public class TestPrompter {
+public class PrompterTest {
 
     @Mock
     PrintWriter mockPrintWriter;
@@ -49,7 +51,7 @@ public class TestPrompter {
     @Mock
     ConsoleScanner mockScanner;
 
-    public TestPrompter() {
+    public PrompterTest() {
         mockPrintWriter = mock(PrintWriter.class);
         mockScanner = mock(ConsoleScanner.class);
     }
