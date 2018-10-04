@@ -340,4 +340,73 @@ public class PrompterTest {
         assertEquals(25, actual.getValue());
         assertEquals(2, actual.getAttempts());
     }
+
+    @Test
+    public void PromptUserForString_WhenInstanceCreatedForConvenience_ShouldCallExplicitMethod() {
+        // Arrange
+        PrompterStringResult actual;
+        when(mockScanner.nextLine())
+            .thenReturn("a");
+        Prompter fixture = new Prompter(mockScanner, mockPrintWriter);
+
+        // Act
+        actual = fixture.PromptUserForString("prompt for val", "err");
+
+        // Assert
+        verify(mockScanner, times(1)).nextLine();
+        verifyNoMoreInteractions(mockScanner);
+
+        verify(mockPrintWriter, times(1)).println("prompt for val");
+        verify(mockPrintWriter, never()).println("err");
+        verifyNoMoreInteractions(mockPrintWriter);
+
+        assertEquals("a", actual.getValue());
+        assertEquals(1, actual.getAttempts());
+    }
+
+    @Test
+    public void PromptUserForInt_WhenInstanceCreatedForConvenience_ShouldCallExplicitMethod() {
+        // Arrange
+        PrompterIntResult actual;
+        when(mockScanner.nextLine())
+            .thenReturn("3");
+        Prompter fixture = new Prompter(mockScanner, mockPrintWriter);
+
+        // Act
+        actual = fixture.PromptUserForInt("prompt for val", "err");
+
+        // Assert
+        verify(mockScanner, times(1)).nextLine();
+        verifyNoMoreInteractions(mockScanner);
+
+        verify(mockPrintWriter, times(1)).println("prompt for val");
+        verify(mockPrintWriter, never()).println("err");
+        verifyNoMoreInteractions(mockPrintWriter);
+
+        assertEquals(3, actual.getValue());
+        assertEquals(1, actual.getAttempts());
+    }
+
+    @Test
+    public void PromptUserForIntInRange_WhenInstanceCreatedForConvenience_ShouldCallExplicitMethod() {
+        // Arrange
+        PrompterIntResult actual;
+        when(mockScanner.nextLine())
+            .thenReturn("5");
+        Prompter fixture = new Prompter(mockScanner, mockPrintWriter);
+
+        // Act
+        actual = fixture.PromptUserForIntInRange("prompt for val", "err", 1, 10);
+
+        // Assert
+        verify(mockScanner, times(1)).nextLine();
+        verifyNoMoreInteractions(mockScanner);
+
+        verify(mockPrintWriter, times(1)).println("prompt for val");
+        verify(mockPrintWriter, never()).println("err");
+        verifyNoMoreInteractions(mockPrintWriter);
+
+        assertEquals(5, actual.getValue());
+        assertEquals(1, actual.getAttempts());
+    }
 }
