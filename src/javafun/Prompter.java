@@ -34,15 +34,53 @@ import javafun.models.PrompterIntResult;
  */
 public class Prompter {
 
+    private final ConsoleScanner reader;
+    private final PrintWriter writer;
+
     /**
-     * This is a convenience method to use standard input and output when prompting
+     * Constructs a new instance of the Prompter class
      *
-     * @param prompt
-     * @param errorMsg
-     * @return
+     * @param reader The <code>ConsoleScanner</code> to use whenever reading input
+     * @param writer The <code>PrintWriter</code> to use whenever writing output
      */
-    public static PrompterStringResult PromptUserForString(String prompt, String errorMsg) {
-        return PromptUserForString(new ConsoleScanner(System.in), new PrintWriter(System.out), prompt, errorMsg);
+    public Prompter(ConsoleScanner reader, PrintWriter writer) {
+        this.reader = reader;
+        this.writer = writer;
+    }
+
+    /**
+     * Prompt the user for a <code>String</code> value
+     *
+     * @param prompt The <code>String</code> message to display to user (to prompt for input)
+     * @param errorMsg The <code>String</code> message to display to user when response is invalid
+     * @return A <code>PrompterStringResult</code> containing response information
+     */
+    public PrompterStringResult PromptUserForString(String prompt, String errorMsg) {
+        return PromptUserForString(this.reader, this.writer, prompt, errorMsg);
+    }
+
+    /**
+     * Prompt the user for an <code>Integer</code> value
+     *
+     * @param prompt The <code>String</code> message to display to user (to prompt for input)
+     * @param errorMsg The <code>String</code> message to display to user when response is invalid
+     * @return A <code>PrompterIntResult</code> containing response information
+     */
+    public PrompterIntResult PromptUserForInt(String prompt, String errorMsg) {
+        return PromptUserForInt(this.reader, this.writer, prompt, errorMsg);
+    }
+
+    /**
+     * Prompt the user for an <code>Integer</code> value within a specified range
+     *
+     * @param prompt The <code>String</code> message to display to user (to prompt for input)
+     * @param errorMsg The <code>String</code> message to display to user when response is invalid
+     * @param min The <code>Integer</code> minimum value to accept from the user (inclusive)
+     * @param max The <code>Integer</code> maximum value to accept from the user (inclusive)
+     * @return A <code>PrompterIntResult</code> containing response information
+     */
+    public PrompterIntResult PromptUserForIntInRange(String prompt, String errorMsg, int min, int max) {
+        return PromptUserForIntInRange(this.reader, this.writer, prompt, errorMsg, min, max);
     }
 
     /**
@@ -50,9 +88,9 @@ public class Prompter {
      *
      * @param reader A <code>ConsoleScanner</code> to read input from (usually created with System.in)
      * @param writer A <code>PrintWriter</code> to write output to (usually created with System.out)
-     * @param prompt The string message to display to user (to prompt for input)
-     * @param errorMsg The string message to display to user when response is invalid
-     * @return A PrompterStringResult containing user response information
+     * @param prompt The <code>String</code> message to display to user (to prompt for input)
+     * @param errorMsg The <code>String</code> message to display to user when response is invalid
+     * @return A <code>PrompterStringResult</code> containing user response information
      */
     public static PrompterStringResult PromptUserForString(
         ConsoleScanner reader,
@@ -79,10 +117,15 @@ public class Prompter {
         return new PrompterStringResult(userEntry, attempts);
     }
 
-    public static PrompterIntResult PromptUserForInt(String prompt, String errorMsg) {
-        return PromptUserForInt(new ConsoleScanner(System.in), new PrintWriter(System.out), prompt, errorMsg);
-    }
-
+    /**
+     * This method is used to obtain an integer value from the user
+     *
+     * @param reader A <code>ConsoleScanner</code> to read input from (usually created with System.in)
+     * @param writer A <code>PrintWriter</code> to write output to (usually created with System.out)
+     * @param prompt The <code>String</code> message to display to user (to prompt for input)
+     * @param errorMsg The <code>String</code> message to display to user when response is invalid
+     * @return A <code>PrompterIntResult</code> containing user response information
+     */
     public static PrompterIntResult PromptUserForInt(
         ConsoleScanner reader,
         PrintWriter writer,
@@ -111,10 +154,17 @@ public class Prompter {
         return new PrompterIntResult(userEnteredInt, attempts);
     }
 
-    public static PrompterIntResult PromptUserForIntInRange(String prompt, String errorMsg, int min, int max) {
-        return PromptUserForIntInRange(new ConsoleScanner(System.in), new PrintWriter(System.out), prompt, errorMsg, min, max);
-    }
-
+    /**
+     * This method is used to obtain an integer value within a specified range from the user
+     *
+     * @param reader A <code>ConsoleScanner</code> to read input from (usually created with System.in)
+     * @param writer A <code>PrintWriter</code> to write output to (usually created with System.out)
+     * @param prompt The <code>String</code> message to display to user (to prompt for input)
+     * @param errorMsg The <code>String</code> message to display to user when response is invalid
+     * @param min The <code>Integer</code> minimum value to accept from the user (inclusive)
+     * @param max The <code>Integer</code> maximum value to accept from the user (inclusive)
+     * @return A <code>PrompterIntResult</code> containing user response information
+     */
     public static PrompterIntResult PromptUserForIntInRange(
         ConsoleScanner reader,
         PrintWriter writer,

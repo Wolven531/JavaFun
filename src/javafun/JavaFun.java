@@ -23,6 +23,7 @@
  */
 package javafun;
 
+import java.io.PrintWriter;
 import javafun.models.PrompterIntResult;
 import javafun.models.PrompterStringResult;
 
@@ -50,10 +51,11 @@ public class JavaFun {
         // String newLineStr = System.getProperty("line.separator");
 
         System.out.println(locationAndGreeting);
-        PrompterStringResult usernameResult = Prompter.PromptUserForString(PROMPT_TEXT_USERNAME, ERROR_USERNAME_EMPTY);
-        String username = usernameResult.getValue();
-        PrompterIntResult ageResult = Prompter.PromptUserForInt(PROMPT_TEXT_AGE, ERROR_INVALID_AGE);
-        int age = ageResult.getValue();
+        Prompter prompter = new Prompter(new ConsoleScanner(System.in), new PrintWriter(System.out));
+        PrompterStringResult usernameResult = prompter.PromptUserForString(PROMPT_TEXT_USERNAME, ERROR_USERNAME_EMPTY);
+        PrompterIntResult ageResult = prompter.PromptUserForInt(PROMPT_TEXT_AGE, ERROR_INVALID_AGE);
+//        String username = usernameResult.getValue();
+//        int age = ageResult.getValue();
 //        PrompterIntResult skillLevelResult = Prompter.PromptUserForChoice(
 //                PROMPT_TEXT_SKILLLEVEL,
 //                ERROR_INVALID_SKILLLEVEL,
