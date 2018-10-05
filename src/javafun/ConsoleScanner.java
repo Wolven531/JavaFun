@@ -37,10 +37,6 @@ public class ConsoleScanner {
         this.source = new Scanner(inputStream);
     }
 
-    public ConsoleScanner(String inputString) {
-        this.source = new Scanner(inputString);
-    }
-
     public String nextLine() {
         return this.source.nextLine();
     }

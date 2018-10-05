@@ -84,6 +84,18 @@ public class Prompter {
     }
 
     /**
+     * Prompt the user for a number selection, given a list of options
+     *
+     * @param prompt The <code>String</code> message to display to user (to prompt for input)
+     * @param errorMsg The <code>String</code> message to display to user when response is invalid
+     * @param choices The <code>String[]</code> of choices for selection by the user
+     * @return A <code>PrompterIntResult</code> containing response information
+     */
+    public PrompterIntResult PromptUserForChoice(String prompt, String errorMsg, String[] choices) {
+        return PromptUserForChoice(this.reader, this.writer, prompt, errorMsg, choices);
+    }
+
+    /**
      * This method is used to obtain a string value from the user
      *
      * @param reader A <code>ConsoleScanner</code> to read input from (usually created with System.in)
@@ -201,43 +213,24 @@ public class Prompter {
         return new PrompterIntResult(userEnteredInt, attempts);
     }
 
-//    public static PrompterIntResult PromptUserForChoice(String prompt, String errorMsg, String[] choices) {
-//        return PromptUserForChoice(new ConsoleScanner(System.in), new PrintWriter(System.out), prompt, errorMsg, choices);
-//    }
-//
-//    public static PrompterIntResult PromptUserForChoice(
-//            ConsoleScanner reader,
-//            PrintWriter writer,
-//            String prompt,
-//            String errorMsg,
-//            String[] choices) {
-//        int numberOfChoices = choices.length - 1;
+    public static PrompterIntResult PromptUserForChoice(
+        ConsoleScanner reader,
+        PrintWriter writer,
+        String prompt,
+        String errorMsg,
+        String[] choices) {
+        int numberOfChoices = choices.length - 1;
 //        int userChoice = -1;
 //        int attempts = 0;
-//
+
 //        // NOTE: keep trying as long as long as value is invalid
 //        while (userChoice == -1) {
 //            attempts++;
-//
-//            // NOTE: display prompt and obtain (wait for) next input
+        // NOTE: display prompt and obtain (wait for) next input
 //            writer.println(prompt);
-//            String potentialChoice = reader.nextLine();
-//
-//            try {
-//                int potentialIndex = Integer.parseInt(potentialChoice);
-//
-//                if (potentialIndex >= 0 && potentialIndex <= numberOfChoices) {
-//                    userChoice = potentialIndex;
-//                } else {
-//                    // NOTE: validation failed, display error
-//                    writer.println(errorMsg);
-//                }
-//            } catch (NumberFormatException numberFormatEx) {
-//                // NOTE: validation failed, display error
-//                writer.println(errorMsg);
-//            }
+//        PrompterIntResult result = PromptUserForIntInRange(reader, writer, prompt, errorMsg, 0, numberOfChoices);
 //        }
-//
-//        return new PrompterIntResult(userChoice, attempts);
-//    }
+        return PromptUserForIntInRange(reader, writer, prompt, errorMsg, 0, numberOfChoices);
+//        return new PrompterIntResult(result.getValue(), result.getAttempts());
+    }
 }
