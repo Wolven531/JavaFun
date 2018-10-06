@@ -24,7 +24,8 @@
 package javafun;
 
 import javafun.models.PrompterStringResult;
-import java.io.PrintWriter;
+import java.io.PrintStream;
+import java.util.Scanner;
 import javafun.models.PrompterIntResult;
 
 /**
@@ -34,16 +35,16 @@ import javafun.models.PrompterIntResult;
  */
 public class Prompter {
 
-    private final ConsoleScanner reader;
-    private final PrintWriter writer;
+    private final Scanner reader;
+    private final PrintStream writer;
 
     /**
      * Constructs a new instance of the Prompter class
      *
-     * @param reader The <code>ConsoleScanner</code> to use whenever reading input
-     * @param writer The <code>PrintWriter</code> to use whenever writing output
+     * @param reader The <code>Scanner</code> to use whenever reading input
+     * @param writer The <code>PrintStream</code> to use whenever writing output
      */
-    public Prompter(ConsoleScanner reader, PrintWriter writer) {
+    public Prompter(Scanner reader, PrintStream writer) {
         this.reader = reader;
         this.writer = writer;
     }
@@ -98,15 +99,15 @@ public class Prompter {
     /**
      * This method is used to obtain a string value from the user
      *
-     * @param reader A <code>ConsoleScanner</code> to read input from (usually created with System.in)
-     * @param writer A <code>PrintWriter</code> to write output to (usually created with System.out)
+     * @param reader A <code>Scanner</code> to read input from (usually created with System.in)
+     * @param writer A <code>PrintStream</code> to write output to (usually System.out)
      * @param prompt The <code>String</code> message to display to user (to prompt for input)
      * @param errorMsg The <code>String</code> message to display to user when response is invalid
      * @return A <code>PrompterStringResult</code> containing user response information
      */
     public static PrompterStringResult PromptUserForString(
-        ConsoleScanner reader,
-        PrintWriter writer,
+        Scanner reader,
+        PrintStream writer,
         String prompt,
         String errorMsg) {
         String userEntry = "";
@@ -132,15 +133,15 @@ public class Prompter {
     /**
      * This method is used to obtain an integer value from the user
      *
-     * @param reader A <code>ConsoleScanner</code> to read input from (usually created with System.in)
-     * @param writer A <code>PrintWriter</code> to write output to (usually created with System.out)
+     * @param reader A <code>Scanner</code> to read input from (usually created with System.in)
+     * @param writer A <code>PrintStream</code> to write output to (usually System.out)
      * @param prompt The <code>String</code> message to display to user (to prompt for input)
      * @param errorMsg The <code>String</code> message to display to user when response is invalid
      * @return A <code>PrompterIntResult</code> containing user response information
      */
     public static PrompterIntResult PromptUserForInt(
-        ConsoleScanner reader,
-        PrintWriter writer,
+        Scanner reader,
+        PrintStream writer,
         String prompt,
         String errorMsg) {
         int userEnteredInt = Integer.MIN_VALUE;
@@ -169,8 +170,8 @@ public class Prompter {
     /**
      * This method is used to obtain an integer value within a specified range from the user
      *
-     * @param reader A <code>ConsoleScanner</code> to read input from (usually created with System.in)
-     * @param writer A <code>PrintWriter</code> to write output to (usually created with System.out)
+     * @param reader A <code>Scanner</code> to read input from (usually created with System.in)
+     * @param writer A <code>PrintStream</code> to write output to (usually System.out)
      * @param prompt The <code>String</code> message to display to user (to prompt for input)
      * @param errorMsg The <code>String</code> message to display to user when response is invalid
      * @param min The <code>Integer</code> minimum value to accept from the user (inclusive)
@@ -178,8 +179,8 @@ public class Prompter {
      * @return A <code>PrompterIntResult</code> containing user response information
      */
     public static PrompterIntResult PromptUserForIntInRange(
-        ConsoleScanner reader,
-        PrintWriter writer,
+        Scanner reader,
+        PrintStream writer,
         String prompt,
         String errorMsg,
         int min,
@@ -214,23 +215,44 @@ public class Prompter {
     }
 
     public static PrompterIntResult PromptUserForChoice(
-        ConsoleScanner reader,
-        PrintWriter writer,
+        Scanner reader,
+        PrintStream writer,
         String prompt,
         String errorMsg,
         String[] choices) {
-        int numberOfChoices = choices.length - 1;
-//        int userChoice = -1;
-//        int attempts = 0;
+        int userChoice = -1;
+        int attempts = 0;
 
-//        // NOTE: keep trying as long as long as value is invalid
-//        while (userChoice == -1) {
-//            attempts++;
-        // NOTE: display prompt and obtain (wait for) next input
-//            writer.println(prompt);
-//        PrompterIntResult result = PromptUserForIntInRange(reader, writer, prompt, errorMsg, 0, numberOfChoices);
-//        }
-        return PromptUserForIntInRange(reader, writer, prompt, errorMsg, 0, numberOfChoices);
-//        return new PrompterIntResult(result.getValue(), result.getAttempts());
+        // NOTE: keep trying as long as long as value is invalid
+        while (userChoice == -1) {
+            attempts++;
+            // NOTE: display prompt and obtain (wait for) next input
+            writer.println(prompt);
+
+            // NOTE: display each choice
+            for (int a = 0; a < choices.length; a++) {
+                writer.println(String.format("%d.) %s", a + 1, choices[a]));
+            }
+
+            String userEnteredLine = reader.nextLine();
+
+            try {
+                int potentialInt = Integer.parseInt(userEnteredLine);
+                // NOTE: decrement to account for zero index
+                potentialInt--;
+
+                if (potentialInt >= 0 && potentialInt <= choices.length) {
+                    userChoice = potentialInt;
+                } else {
+                    // NOTE: validation failed, display error
+                    writer.println(errorMsg);
+                }
+            } catch (NumberFormatException numberFormatEx) {
+                // NOTE: validation failed, display error
+                writer.println(errorMsg);
+            }
+        }
+
+        return new PrompterIntResult(userChoice, attempts);
     }
 }

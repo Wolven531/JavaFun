@@ -23,7 +23,7 @@
  */
 package javafun;
 
-import java.io.PrintWriter;
+import java.util.Scanner;
 import javafun.models.PrompterIntResult;
 import javafun.models.PrompterStringResult;
 
@@ -51,19 +51,17 @@ public class JavaFun {
         // String newLineStr = System.getProperty("line.separator");
 
         System.out.println(locationAndGreeting);
-//        Prompter prompter = new Prompter(new ConsoleScanner(System.in), new PrintWriter(System.out));
-//        PrompterStringResult usernameResult = prompter.PromptUserForString(PROMPT_TEXT_USERNAME, ERROR_USERNAME_EMPTY);
-//        PrompterStringResult usernameResult = Prompter.PromptUserForString(
-//            new ConsoleScanner(System.in),
-//            new PrintWriter(System.out),
-//            PROMPT_TEXT_USERNAME,
-//            ERROR_USERNAME_EMPTY);
-//        PrompterIntResult ageResult = prompter.PromptUserForInt(PROMPT_TEXT_AGE, ERROR_INVALID_AGE);
-//        PrompterIntResult skillLevelResult = prompter.PromptUserForChoice(
-//            PROMPT_TEXT_SKILLLEVEL,
-//            ERROR_INVALID_SKILLLEVEL,
-//            CHOICES_SKILL_LEVEL);
-//        String username = usernameResult.getValue();
-//        int age = ageResult.getValue();
+        Prompter prompter = new Prompter(new Scanner(System.in), System.out);
+        PrompterStringResult usernameResult = prompter.PromptUserForString(PROMPT_TEXT_USERNAME, ERROR_USERNAME_EMPTY);
+        PrompterIntResult ageResult = prompter.PromptUserForInt(PROMPT_TEXT_AGE, ERROR_INVALID_AGE);
+        PrompterIntResult skillLevelResult = prompter.PromptUserForChoice(
+            PROMPT_TEXT_SKILLLEVEL,
+            ERROR_INVALID_SKILLLEVEL,
+            CHOICES_SKILL_LEVEL);
+
+        System.out.printf("\tUsername = %s%n", usernameResult.getValue());
+        System.out.printf("\tAge = %d%n", ageResult.getValue());
+        System.out.printf("\tSkill = %s%n", CHOICES_SKILL_LEVEL[skillLevelResult.getValue()]);
+
     }
 }
