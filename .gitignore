@@ -24,3 +24,5 @@ hs_err_pid*
 /build/
 /.jacocoverage/report.html
 /.vs/slnx.sqlite
+nbproject/private/private.properties
+nbproject/project.properties
