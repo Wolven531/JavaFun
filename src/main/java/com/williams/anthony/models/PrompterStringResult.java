@@ -21,23 +21,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package javafun.models;
+package com.williams.anthony.models;
 
 /**
- * Model used to represent information regarding a user response (as an int) to a prompt
+ * Model used to represent information regarding a user response (as a string) to a prompt
  *
  * @author Anthony Williams
  */
-public class PrompterIntResult {
+public class PrompterStringResult {
 
     private final int attempts;
-    private final int value;
+    private final String value;
 
     /**
-     * @param value The int value obtained from the user
+     * @param value The string value obtained from the user
      * @param attempts The number of attempts (including the final) it took to obtain a value from the user
      */
-    public PrompterIntResult(int value, int attempts) {
+    public PrompterStringResult(String value, int attempts) {
         this.value = value;
         this.attempts = attempts;
     }
@@ -50,9 +50,9 @@ public class PrompterIntResult {
     }
 
     /**
-     * @return The int value obtained from the user
+     * @return The string value obtained from the user
      */
-    public int getValue() {
+    public String getValue() {
         return value;
     }
 }

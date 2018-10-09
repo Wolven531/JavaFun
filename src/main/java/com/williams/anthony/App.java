@@ -21,17 +21,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package javafun;
+
+package com.williams.anthony;
 
 import java.util.Scanner;
-import javafun.models.PrompterIntResult;
-import javafun.models.PrompterStringResult;
 
 /**
  * @author Anthony Williams
  */
-public class JavaFun {
-
+public final class App {
     private static final String[] CHOICES_SKILL_LEVEL = new String[]{"Untrained", "Trained", "Skilled", "Expert"};
     private static final String ERROR_INVALID_AGE = "Age must be an integer number (e.g.: 1, 15, 50...)";
     private static final String ERROR_INVALID_SKILLLEVEL = "Please select a valid skill level";
@@ -45,7 +43,7 @@ public class JavaFun {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        String currentCodeLocation = "[javafun.JavaFun.main()]";
+        String currentCodeLocation = "[App.main()]";
         String locationAndGreeting = currentCodeLocation.concat(" ").concat(GREETING);
         // NOTE: Variable below and %n in formatted strings are equal
         // String newLineStr = System.getProperty("line.separator");

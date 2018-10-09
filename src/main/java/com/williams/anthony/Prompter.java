@@ -21,12 +21,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package javafun;
+package com.williams.anthony;
 
-import javafun.models.PrompterStringResult;
 import java.io.PrintStream;
 import java.util.Scanner;
-import javafun.models.PrompterIntResult;
+import com.williams.anthony.models.PrompterIntResult;
+import com.williams.anthony.models.PrompterStringResult;
 
 /**
  * This class is used to obtain input from the user
