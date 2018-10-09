@@ -50,7 +50,16 @@ Get-ChildItem -Path . -Filter '*.*' -Recurse | ForEach-Object { dos2unix.exe $_.
 cmd /c mvn archetype:generate -DarchetypeArtifactId="archetype-quickstart-jdk8" -DarchetypeGroupId="com.github.ngeor"
 ```
 
+* Run project from command line
+
+```PowerShell
+java -cp .\target\javafun-1.0-SNAPSHOT.jar com.williams.anthony.App
+```
+
 * Maven commands
+  * `mvn clean` - Delete `./target` directory (previous builds)
+  * `mvn install` - Create `./target` directory (new build)
+  * `mvn clean install` - Delete AND create `./target` directory (💯 new build)
   * `mvn compile` - ???
-  * `mvn assembly:single` - Create a runnable JAR in `./target` ???
-  * `mvn jar:jar` - Create a runnable JAR in `./target` ???
+  * `mvn assembly:single` - ???
+  * `mvn jar:jar` - ???
