@@ -43,7 +43,13 @@ choco install netbeans -y
 Get-ChildItem -Path . -Filter '*.*' -Recurse | ForEach-Object { dos2unix.exe $_.FullName }
 ```
 
+* Generate JDK 8 project using Maven
+
+```PowerShell
+cmd /c mvn archetype:generate -DarchetypeArtifactId="archetype-quickstart-jdk8" -DarchetypeGroupId="com.github.ngeor"
+```
+
 * Maven commands
-  * `mvn compile` - 
-  * `mvn assembly:single` - Create a runnable JAR in `./target`
-  * `mvn jar:jar` - Create a runnable JAR in `./target`
+  * `mvn compile` - ???
+  * `mvn assembly:single` - Create a runnable JAR in `./target` ???
+  * `mvn jar:jar` - Create a runnable JAR in `./target` ???
