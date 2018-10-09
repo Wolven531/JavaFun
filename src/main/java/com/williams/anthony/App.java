@@ -25,6 +25,8 @@
 package com.williams.anthony;
 
 import java.util.Scanner;
+import com.williams.anthony.models.PrompterIntResult;
+import com.williams.anthony.models.PrompterStringResult;
 
 /**
  * @author Anthony Williams

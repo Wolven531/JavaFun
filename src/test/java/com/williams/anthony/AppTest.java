@@ -1,10 +1,8 @@
 package com.williams.anthony;
 
-// import org.junit.Test;
-
-import static org.junit.Assert.*;
+//import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
-// import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.io.PrintStream;
@@ -25,7 +23,7 @@ public class AppTest {
     @Mock
     PrintStream mockPrintStream;
 
-    public PrompterTest() {
+    public AppTest() {
         mockPrintStream = mock(PrintStream.class);
     }
 
