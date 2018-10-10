@@ -62,7 +62,7 @@ jar tf .\target\javafun-1.0-SNAPSHOT.jar
 * Run project from command line
 
 ```PowerShell
-java -cp .\target\javafun-1.0-SNAPSHOT.jar com.williams.anthony.App
+Set-ExecutionPolicy Bypass -Scope Process -Force; ./runProgram.ps1
 ```
 
 * Maven commands
