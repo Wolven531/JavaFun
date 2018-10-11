@@ -11,13 +11,10 @@ import org.junit.Test;
 import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import com.williams.anthony.Prompter;
+import com.williams.anthony.models.PrompterChoiceResult;
 import com.williams.anthony.models.PrompterIntResult;
 import com.williams.anthony.models.PrompterStringResult;
 
-/**
- * Unit test for simple App.
- */
 public class AppTest {
 
     @Mock
@@ -258,6 +255,65 @@ public class AppTest {
     }
 
     @Test
+    public void PromptUserForChoice_WhenProvidedValidValueOnFirstAttempt_ShouldReturnPrompterChoiceResult() throws IOException {
+        // Arrange
+        PrompterChoiceResult actual;
+        Scanner scanner = new Scanner(String.format("2"));
+
+        // Act
+        actual = Prompter.PromptUserForChoice(
+            scanner,
+            mockPrintStream,
+            "prompt for val",
+            "err",
+            new String[]{ "c1", "c2", "c3" });
+
+        // Assert
+        InOrder inOrder = Mockito.inOrder(mockPrintStream);
+        inOrder.verify(mockPrintStream).println("prompt for val");
+        inOrder.verify(mockPrintStream).println("1.) c1");
+        inOrder.verify(mockPrintStream).println("2.) c2");
+        inOrder.verify(mockPrintStream).println("3.) c3");
+        verifyNoMoreInteractions(mockPrintStream);
+
+        assertEquals(1, actual.getChoiceIndex());
+        assertEquals("c2", actual.getChoiceText());
+        assertEquals(1, actual.getAttempts());
+    }
+    
+    @Test
+    public void PromptUserForChoice_WhenProvidedNegativeValueOnFirstAttempt_ShouldReturnPrompterChoiceResult() throws IOException {
+        // Arrange
+        PrompterChoiceResult actual;
+        Scanner scanner = new Scanner(String.format("-1%n1"));
+
+        // Act
+        actual = Prompter.PromptUserForChoice(
+            scanner,
+            mockPrintStream,
+            "prompt for val",
+            "err",
+            new String[]{ "c1", "c2", "c3" });
+
+        // Assert
+        InOrder inOrder = Mockito.inOrder(mockPrintStream);
+        inOrder.verify(mockPrintStream).println("prompt for val");
+        inOrder.verify(mockPrintStream).println("1.) c1");
+        inOrder.verify(mockPrintStream).println("2.) c2");
+        inOrder.verify(mockPrintStream).println("3.) c3");
+        inOrder.verify(mockPrintStream).println("err");
+        inOrder.verify(mockPrintStream).println("prompt for val");
+        inOrder.verify(mockPrintStream).println("1.) c1");
+        inOrder.verify(mockPrintStream).println("2.) c2");
+        inOrder.verify(mockPrintStream).println("3.) c3");
+        verifyNoMoreInteractions(mockPrintStream);
+
+        assertEquals(0, actual.getChoiceIndex());
+        assertEquals("c1", actual.getChoiceText());
+        assertEquals(2, actual.getAttempts());
+    }
+    
+    @Test
     public void PromptUserForString_WhenInstanceCreatedForConvenience_ShouldCallExplicitMethod() {
         // Arrange
         PrompterStringResult actual;
@@ -311,6 +367,31 @@ public class AppTest {
         verifyNoMoreInteractions(mockPrintStream);
 
         assertEquals(5, actual.getValue());
+        assertEquals(1, actual.getAttempts());
+    }
+    
+    @Test
+    public void PromptUserForChoice_WhenInstanceCreatedForConvenience_ShouldCallExplicitMethod() {
+        // Arrange
+        PrompterChoiceResult actual;
+        Scanner scanner = new Scanner(String.format("1"));
+        Prompter fixture = new Prompter(scanner, mockPrintStream);
+
+        // Act
+        actual = fixture.PromptUserForChoice("prompt for val", "err", new String[]{ "c1", "c2", "c3" });
+
+        // Assert
+        InOrder inOrder = Mockito.inOrder(mockPrintStream);
+        inOrder.verify(mockPrintStream).println("prompt for val");
+        inOrder.verify(mockPrintStream).println("1.) c1");
+        inOrder.verify(mockPrintStream).println("2.) c2");
+        inOrder.verify(mockPrintStream).println("3.) c3");
+    
+        verify(mockPrintStream, never()).println("err");
+        verifyNoMoreInteractions(mockPrintStream);
+
+        assertEquals(0, actual.getChoiceIndex());
+        assertEquals("c1", actual.getChoiceText());
         assertEquals(1, actual.getAttempts());
     }
 }

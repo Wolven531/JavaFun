@@ -23,6 +23,7 @@
  */
 package com.williams.anthony;
 
+import com.williams.anthony.models.PrompterChoiceResult;
 import java.io.PrintStream;
 import java.util.Scanner;
 import com.williams.anthony.models.PrompterIntResult;
@@ -80,19 +81,26 @@ public class Prompter {
      * @param max The <code>Integer</code> maximum value to accept from the user (inclusive)
      * @return A <code>PrompterIntResult</code> containing response information
      */
-    public PrompterIntResult PromptUserForIntInRange(String prompt, String errorMsg, int min, int max) {
+    public PrompterIntResult PromptUserForIntInRange(
+        String prompt,
+        String errorMsg,
+        int min,
+        int max) {
         return PromptUserForIntInRange(this.reader, this.writer, prompt, errorMsg, min, max);
     }
 
     /**
-     * Prompt the user for a number selection, given a list of options
+     * This method is used to obtain a selection from the user, given choices
      *
      * @param prompt The <code>String</code> message to display to user (to prompt for input)
      * @param errorMsg The <code>String</code> message to display to user when response is invalid
      * @param choices The <code>String[]</code> of choices for selection by the user
-     * @return A <code>PrompterIntResult</code> containing response information
+     * @return A <code>PrompterChoiceResult</code> containing response information
      */
-    public PrompterIntResult PromptUserForChoice(String prompt, String errorMsg, String[] choices) {
+    public PrompterChoiceResult PromptUserForChoice(
+        String prompt,
+        String errorMsg,
+        String[] choices) {
         return PromptUserForChoice(this.reader, this.writer, prompt, errorMsg, choices);
     }
 
@@ -214,7 +222,18 @@ public class Prompter {
         return new PrompterIntResult(userEnteredInt, attempts);
     }
 
-    public static PrompterIntResult PromptUserForChoice(
+    /**
+     * This method is used to obtain a selection from the user, given choices
+     *
+     * @param reader A <code>Scanner</code> to read input from (usually created with System.in)
+     * @param writer A <code>PrintStream</code> to write output to (usually System.out)
+     * @param prompt The <code>String</code> message to display to user (to prompt for input)
+     * @param errorMsg The <code>String</code> message to display to user when response is invalid
+     * @param choices The <code>String[]</code> of choices the user may select
+     *
+     * @return A <code>PrompterIntResult</code> containing user response information
+     */
+    public static PrompterChoiceResult PromptUserForChoice(
         Scanner reader,
         PrintStream writer,
         String prompt,
@@ -253,6 +272,6 @@ public class Prompter {
             }
         }
 
-        return new PrompterIntResult(userChoice, attempts);
+        return new PrompterChoiceResult(userChoice, choices[userChoice], attempts);
     }
 }

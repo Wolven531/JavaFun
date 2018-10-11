@@ -21,9 +21,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package com.williams.anthony;
 
+import com.williams.anthony.models.PrompterChoiceResult;
 import java.util.Scanner;
 import com.williams.anthony.models.PrompterIntResult;
 import com.williams.anthony.models.PrompterStringResult;
@@ -32,6 +32,7 @@ import com.williams.anthony.models.PrompterStringResult;
  * @author Anthony Williams
  */
 public final class App {
+
     private static final String[] CHOICES_SKILL_LEVEL = new String[]{"Untrained", "Trained", "Skilled", "Expert"};
     private static final String ERROR_INVALID_AGE = "Age must be an integer number (e.g.: 1, 15, 50...)";
     private static final String ERROR_INVALID_SKILLLEVEL = "Please select a valid skill level";
@@ -54,14 +55,17 @@ public final class App {
         Prompter prompter = new Prompter(new Scanner(System.in), System.out);
         PrompterStringResult usernameResult = prompter.PromptUserForString(PROMPT_TEXT_USERNAME, ERROR_USERNAME_EMPTY);
         PrompterIntResult ageResult = prompter.PromptUserForInt(PROMPT_TEXT_AGE, ERROR_INVALID_AGE);
-        PrompterIntResult skillLevelResult = prompter.PromptUserForChoice(
+        PrompterChoiceResult skillLevelResult = prompter.PromptUserForChoice(
             PROMPT_TEXT_SKILLLEVEL,
             ERROR_INVALID_SKILLLEVEL,
             CHOICES_SKILL_LEVEL);
 
         System.out.printf("\tUsername = %s%n", usernameResult.getValue());
         System.out.printf("\tAge = %d%n", ageResult.getValue());
-        System.out.printf("\tSkill = %s%n", CHOICES_SKILL_LEVEL[skillLevelResult.getValue()]);
+        System.out.printf(
+            "\tSkill = %d.) %s%n",
+            skillLevelResult.getChoiceIndex() + 1,
+            skillLevelResult.getChoiceText());
 
     }
 }
