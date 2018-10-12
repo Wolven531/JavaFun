@@ -34,12 +34,12 @@
                         <dependency>
                             <groupId>com.puppycrawl.tools</groupId>
                             <artifactId>checkstyle</artifactId>
-                            <version>8.10</version>
+                            <version>8.13</version>
                         </dependency>
                         <dependency>
                             <groupId>com.github.ngeor</groupId>
                             <artifactId>checkstyle-rules</artifactId>
-                            <version>1.1.0</version>
+                            <version>1.9.0</version>
                         </dependency>
                     </dependencies>
                     <configuration>
