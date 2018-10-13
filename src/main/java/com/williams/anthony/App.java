@@ -23,8 +23,8 @@
  */
 package com.williams.anthony;
 
-import com.williams.anthony.models.PrompterChoiceResult;
 import java.util.Scanner;
+import com.williams.anthony.models.PrompterChoiceResult;
 import com.williams.anthony.models.PrompterIntResult;
 import com.williams.anthony.models.PrompterStringResult;
 
@@ -38,8 +38,8 @@ public final class App {
     private static final String ERROR_INVALID_SKILLLEVEL = "Please select a valid skill level";
     private static final String ERROR_USERNAME_EMPTY = "Username cannot be empty";
     private static final String GREETING = "Ello! 😊";
-    private static final String PROMPT_TEXT_SKILLLEVEL = "Please enter a skill level number from the list and press [Enter]";
     private static final String PROMPT_TEXT_AGE = "Input an age (integer) and press [Enter]";
+    private static final String PROMPT_TEXT_SKILLLEVEL = "Input a skill level number from the list and press [Enter]";
     private static final String PROMPT_TEXT_USERNAME = "Input a username and press [Enter]";
 
     /**

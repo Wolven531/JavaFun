@@ -23,9 +23,9 @@
  */
 package com.williams.anthony;
 
-import com.williams.anthony.models.PrompterChoiceResult;
 import java.io.PrintStream;
 import java.util.Scanner;
+import com.williams.anthony.models.PrompterChoiceResult;
 import com.williams.anthony.models.PrompterIntResult;
 import com.williams.anthony.models.PrompterStringResult;
 
