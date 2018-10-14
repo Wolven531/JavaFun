@@ -23,49 +23,84 @@
  */
 package com.williams.anthony;
 
-import java.util.Scanner;
-import com.williams.anthony.models.PrompterChoiceResult;
-import com.williams.anthony.models.PrompterIntResult;
-import com.williams.anthony.models.PrompterStringResult;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.Date;
+// import java.util.Scanner;
+// import com.williams.anthony.models.PrompterChoiceResult;
+// import com.williams.anthony.models.PrompterIntResult;
+// import com.williams.anthony.models.PrompterStringResult;
 
 /**
  * @author Anthony Williams
  */
 public final class App {
 
-    private static final String[] CHOICES_SKILL_LEVEL = new String[]{"Untrained", "Trained", "Skilled", "Expert"};
-    private static final String ERROR_INVALID_AGE = "Age must be an integer number (e.g.: 1, 15, 50...)";
-    private static final String ERROR_INVALID_SKILLLEVEL = "Please select a valid skill level";
-    private static final String ERROR_USERNAME_EMPTY = "Username cannot be empty";
-    private static final String GREETING = "Ello! 😊";
-    private static final String PROMPT_TEXT_AGE = "Input an age (integer) and press [Enter]";
-    private static final String PROMPT_TEXT_SKILLLEVEL = "Input a skill level number from the list and press [Enter]";
-    private static final String PROMPT_TEXT_USERNAME = "Input a username and press [Enter]";
+	// private static final String[] CHOICES_SKILL_LEVEL = new String[] { "Untrained", "Trained", "Skilled", "Expert" };
+	// private static final String ERROR_INVALID_AGE = "Age must be an integer number (e.g.: 1, 15, 50...)";
+	// private static final String ERROR_INVALID_SKILLLEVEL = "Please select a valid skill level";
+	// private static final String ERROR_USERNAME_EMPTY = "Username cannot be empty";
+	private static final String GREETING = "Ello! 😊";
+	// private static final String PROMPT_TEXT_AGE = "Input an age (integer) and press [Enter]";
+	// private static final String PROMPT_TEXT_SKILLLEVEL = "Input a skill level number from the list and press [Enter]";
+	// private static final String PROMPT_TEXT_USERNAME = "Input a username and press [Enter]";
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        String currentCodeLocation = "[App.main()]";
-        String locationAndGreeting = currentCodeLocation.concat(" ").concat(GREETING);
-        // NOTE: Variable below and %n in formatted strings are equal
-        // String newLineStr = System.getProperty("line.separator");
+	/**
+	 * @param args the command line arguments
+	 */
+	public static void main(String[] args) {
+		String currentCodeLocation = "[App.main()]";
+		String locationAndGreeting = currentCodeLocation.concat(" ").concat(GREETING);
+		// NOTE: Variable below and %n in formatted strings are equal
+		// String newLineStr = System.getProperty("line.separator");
+		
+		System.out.println(locationAndGreeting);
+		spinUpServer();
+		// Prompter prompter = new Prompter(new Scanner(System.in), System.out);
+		// PrompterStringResult usernameResult = prompter.PromptUserForString(PROMPT_TEXT_USERNAME, ERROR_USERNAME_EMPTY);
+		// PrompterIntResult ageResult = prompter.PromptUserForInt(PROMPT_TEXT_AGE, ERROR_INVALID_AGE);
+		// PrompterChoiceResult skillLevelResult = prompter.PromptUserForChoice(PROMPT_TEXT_SKILLLEVEL,
+		// 		ERROR_INVALID_SKILLLEVEL, CHOICES_SKILL_LEVEL);
 
-        System.out.println(locationAndGreeting);
-        Prompter prompter = new Prompter(new Scanner(System.in), System.out);
-        PrompterStringResult usernameResult = prompter.PromptUserForString(PROMPT_TEXT_USERNAME, ERROR_USERNAME_EMPTY);
-        PrompterIntResult ageResult = prompter.PromptUserForInt(PROMPT_TEXT_AGE, ERROR_INVALID_AGE);
-        PrompterChoiceResult skillLevelResult = prompter.PromptUserForChoice(
-            PROMPT_TEXT_SKILLLEVEL,
-            ERROR_INVALID_SKILLLEVEL,
-            CHOICES_SKILL_LEVEL);
+		// System.out.printf("\tUsername = %s%n", usernameResult.getValue());
+		// System.out.printf("\tAge = %d%n", ageResult.getValue());
+		// System.out.printf("\tSkill = %d.) %s%n", skillLevelResult.getChoiceIndex() + 1,
+		// 		skillLevelResult.getChoiceText());
+	}
 
-        System.out.printf("\tUsername = %s%n", usernameResult.getValue());
-        System.out.printf("\tAge = %d%n", ageResult.getValue());
-        System.out.printf(
-            "\tSkill = %d.) %s%n",
-            skillLevelResult.getChoiceIndex() + 1,
-            skillLevelResult.getChoiceText());
+	private static void spinUpServer() {
+		ServerSocket listener = null;
+		System.out.println("[App.spinUpServer()]");
 
-    }
+		try {
+			System.out.println("creating new server socket...");
+			listener = new ServerSocket(9090);
+
+			while (true) {
+				System.out.println("about to accept connections...");
+				Socket socket = listener.accept();
+
+				try {
+					PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+					System.out.println("about to write to response stream...");
+					out.println(new Date().toString());
+				} finally {
+					System.out.println("about to close socket...");
+					socket.close();
+				}
+			}
+		} catch (IOException err1) {
+			err1.printStackTrace();
+		} finally {
+			try {
+				System.out.println("about to close listener...");
+				listener.close();
+			} catch (IOException err2) {
+				err2.printStackTrace();
+			}
+		}
+		System.out.println("[App.spinUpServer] Fin");
+	}
 }
