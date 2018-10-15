@@ -51,13 +51,15 @@ public final class App {
 	 * @param args the command line arguments
 	 */
 	public static void main(String[] args) {
-		String currentCodeLocation = "[App.main()]";
-		String locationAndGreeting = currentCodeLocation.concat(" ").concat(GREETING);
 		// NOTE: Variable below and %n in formatted strings are equal
 		// String newLineStr = System.getProperty("line.separator");
-		
-		System.out.println(locationAndGreeting);
-		spinUpServer();
+		System.out.printf("[App.main()] %s%n", GREETING);
+
+		try {
+			spinUpServer(9090);
+		} catch (IOException ioException) {
+			ioException.printStackTrace();
+		}
 		// Prompter prompter = new Prompter(new Scanner(System.in), System.out);
 		// PrompterStringResult usernameResult = prompter.PromptUserForString(PROMPT_TEXT_USERNAME, ERROR_USERNAME_EMPTY);
 		// PrompterIntResult ageResult = prompter.PromptUserForInt(PROMPT_TEXT_AGE, ERROR_INVALID_AGE);
@@ -70,37 +72,43 @@ public final class App {
 		// 		skillLevelResult.getChoiceText());
 	}
 
-	private static void spinUpServer() {
+	private static void spinUpServer(int port) throws IOException {
 		ServerSocket listener = null;
-		System.out.println("[App.spinUpServer()]");
+		boolean isRunning = true;
+		System.out.printf("[App.spinUpServer()] Starting up... port = %d%n", port);
 
 		try {
-			System.out.println("creating new server socket...");
-			listener = new ServerSocket(9090);
+			System.out.println("[App.spinUpServer()] Creating server...");
+			listener = new ServerSocket(port);
+			System.out.println("[App.spinUpServer()] Great Success 🎂");
 
-			while (true) {
-				System.out.println("about to accept connections...");
-				Socket socket = listener.accept();
-
-				try {
-					PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-					System.out.println("about to write to response stream...");
-					out.println(new Date().toString());
-				} finally {
-					System.out.println("about to close socket...");
-					socket.close();
-				}
+			while (isRunning) {
+				Socket clientConnection = listener.accept();
+				handleRequest(clientConnection);
 			}
-		} catch (IOException err1) {
-			err1.printStackTrace();
 		} finally {
-			try {
-				System.out.println("about to close listener...");
-				listener.close();
-			} catch (IOException err2) {
-				err2.printStackTrace();
-			}
+			handleServerShutdown(listener);
 		}
-		System.out.println("[App.spinUpServer] Fin");
+	}
+	
+	private static void handleServerShutdown(ServerSocket listener) throws IOException {
+		System.out.println("[App.handleServerShutdown()] Shutting down...");
+		listener.close();
+		System.out.println("[App.handleServerShutdown()] Goodbye! 👍");
+	}
+
+	private static void handleRequest(Socket clientConnection) throws IOException {
+		System.out.printf("[App.handleRequest()] Got request %s %s %s 💖%n",
+			clientConnection.getInetAddress(),
+			clientConnection.getLocalAddress(),
+			clientConnection.getLocalSocketAddress());
+
+		try {
+			PrintWriter responseWriter = new PrintWriter(clientConnection.getOutputStream(), true);
+			String responseText = new Date().toString();
+			responseWriter.println(responseText);
+		} finally {
+			clientConnection.close();
+		}
 	}
 }
