@@ -32,6 +32,12 @@ import java.util.Date;
 
 /**
  * @author Anthony Williams
+ *
+ * Inspired by http://cs.lmu.edu/~ray/notes/javanetexamples/#date
+ *
+ * TODO: Generate tests like https://netbeans.org/kb/docs/java/junit-intro.html#Exercise_24
+ *
+ * TODO: Tutorial https://docs.oracle.com/javase/tutorial/networking/sockets/clientServer.html
  */
 public final class SimpleServer {
 
