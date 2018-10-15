@@ -24,14 +24,6 @@
 package com.williams.anthony;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.Date;
-// import java.util.Scanner;
-// import com.williams.anthony.models.PrompterChoiceResult;
-// import com.williams.anthony.models.PrompterIntResult;
-// import com.williams.anthony.models.PrompterStringResult;
 
 /**
  * @author Anthony Williams
@@ -56,7 +48,8 @@ public final class App {
 		System.out.printf("[App.main()] %s%n", GREETING);
 
 		try {
-			spinUpServer(9090);
+			SimpleServer server = new SimpleServer();
+			server.spinUpServer(9090);
 		} catch (IOException ioException) {
 			ioException.printStackTrace();
 		}
@@ -70,45 +63,5 @@ public final class App {
 		// System.out.printf("\tAge = %d%n", ageResult.getValue());
 		// System.out.printf("\tSkill = %d.) %s%n", skillLevelResult.getChoiceIndex() + 1,
 		// 		skillLevelResult.getChoiceText());
-	}
-
-	private static void spinUpServer(int port) throws IOException {
-		ServerSocket listener = null;
-		boolean isRunning = true;
-		System.out.printf("[App.spinUpServer()] Starting up... port = %d%n", port);
-
-		try {
-			System.out.println("[App.spinUpServer()] Creating server...");
-			listener = new ServerSocket(port);
-			System.out.println("[App.spinUpServer()] Great Success 🎂");
-
-			while (isRunning) {
-				Socket clientConnection = listener.accept();
-				handleRequest(clientConnection);
-			}
-		} finally {
-			handleServerShutdown(listener);
-		}
-	}
-	
-	private static void handleServerShutdown(ServerSocket listener) throws IOException {
-		System.out.println("[App.handleServerShutdown()] Shutting down...");
-		listener.close();
-		System.out.println("[App.handleServerShutdown()] Goodbye! 👍");
-	}
-
-	private static void handleRequest(Socket clientConnection) throws IOException {
-		System.out.printf("[App.handleRequest()] Got request %s %s %s 💖%n",
-			clientConnection.getInetAddress(),
-			clientConnection.getLocalAddress(),
-			clientConnection.getLocalSocketAddress());
-
-		try {
-			PrintWriter responseWriter = new PrintWriter(clientConnection.getOutputStream(), true);
-			String responseText = new Date().toString();
-			responseWriter.println(responseText);
-		} finally {
-			clientConnection.close();
-		}
 	}
 }
