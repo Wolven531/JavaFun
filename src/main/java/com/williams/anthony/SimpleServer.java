@@ -28,27 +28,35 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Date;
-// import java.util.Scanner;
+import java.util.Scanner;
 
 /**
+ * // NOTE: Inspired by http://cs.lmu.edu/~ray/notes/javanetexamples/#date
+ *
+ * // TODO: Generate tests like
+ * https://netbeans.org/kb/docs/java/junit-intro.html#Exercise_24
+ *
+ * // TODO: Tutorial
+ * https://docs.oracle.com/javase/tutorial/networking/sockets/clientServer.html
+ *
  * @author Anthony Williams
- *
- * Inspired by http://cs.lmu.edu/~ray/notes/javanetexamples/#date
- *
- * TODO: Generate tests like https://netbeans.org/kb/docs/java/junit-intro.html#Exercise_24
- *
- * TODO: Tutorial https://docs.oracle.com/javase/tutorial/networking/sockets/clientServer.html
  */
 public final class SimpleServer {
+	private boolean isRunning = false;
 
+	/**
+	 *
+	 * @param port
+	 * @throws IOException
+	 */
 	public void spinUpServer(int port) throws IOException {
 		ServerSocket listener = null;
-		boolean isRunning = true;
-		System.out.printf("[App.spinUpServer()] Starting up... port = %d%n", port);
 
 		try {
+			System.out.printf("[App.spinUpServer()] Starting up... port = %d%n", port);
 			System.out.println("[App.spinUpServer()] Creating server...");
 			listener = new ServerSocket(port);
+			isRunning = true;
 			System.out.println("[App.spinUpServer()] Great Success 🎂");
 
 			while (isRunning) {
@@ -59,25 +67,107 @@ public final class SimpleServer {
 			handleServerShutdown(listener);
 		}
 	}
-	
+
+	/**
+	 *
+	 * @param listener
+	 * @throws IOException
+	 */
 	public void handleServerShutdown(ServerSocket listener) throws IOException {
 		System.out.println("[App.handleServerShutdown()] Shutting down...");
 		listener.close();
 		System.out.println("[App.handleServerShutdown()] Goodbye! 👍");
 	}
 
+	/**
+	 *
+	 * @param clientConnection
+	 * @throws IOException
+	 */
 	public void handleRequest(Socket clientConnection) throws IOException {
-		System.out.printf("[App.handleRequest()] Got request %s %s %s 💖%n",
-			clientConnection.getInetAddress(),
-			clientConnection.getLocalAddress(),
-			clientConnection.getLocalSocketAddress());
+		System.out.println("[App.handleRequest()] Got request");
 
 		try {
-			PrintWriter responseWriter = new PrintWriter(clientConnection.getOutputStream(), true);
-			String responseText = new Date().toString();
-			responseWriter.println(responseText);
+			parseRequestInformation(clientConnection);
+			writeResponseInformation(clientConnection);
 		} finally {
 			clientConnection.close();
 		}
+	}
+
+	/**
+	 *
+	 * @param clientConnection
+	 * @throws IOException
+	 */
+	private void writeResponseInformation(Socket clientConnection) throws IOException {
+		System.out.println("[App.writeResponseInformation()]");
+		PrintWriter responseWriter = null;
+
+		try {
+			String responseText = new Date().toString();
+
+			responseWriter = new PrintWriter(clientConnection.getOutputStream(), true);
+			responseWriter.println(responseText);
+		} finally {
+			if (responseWriter != null) {
+				System.out.println("[App.writeResponseInformation()] closing response writer...");
+				responseWriter.close();
+			}
+		}
+	}
+
+	/**
+	 * // NOTE: getInetAddress = "/0:0:0:0:0:0:0:1"
+	 *
+	 * // NOTE: getLocalAddress = "/0:0:0:0:0:0:0:1"
+	 *
+	 * // NOTE: getLocalPort = "9090"
+	 * 
+	 * // NOTE: getLocalSocketAddress = "/0:0:0:0:0:0:0:1:9090"
+	 *
+	 * // NOTE: getPort = "56967"
+	 *
+	 * // NOTE: getRemoteSocketAddress = "/0:0:0:0:0:0:0:1:56967"
+	 *
+	 * // NOTE: getTrafficClass = "0"
+	 *
+	 * @param clientConnection
+	 * @return
+	 * @throws IOException
+	 */
+	private String parseRequestInformation(Socket clientConnection) throws IOException {
+		System.out.println("[App.parseRequestInformation()]");
+		String result = "";
+		StringBuilder requestBuilder = new StringBuilder("");
+		Scanner requestReader = null;
+
+		try {
+			System.out.println("[App.parseRequestInformation()] Creating reader...");
+			requestReader = new Scanner(clientConnection.getInputStream());
+
+			System.out.println("[App.parseRequestInformation()] Looping...");
+			boolean shouldKeepReading = true;
+
+			while (shouldKeepReading) {
+				String nextLine = requestReader.nextLine();
+				shouldKeepReading = !nextLine.equals("");
+
+				System.out.printf("[App.parseRequestInformation()] Appending next line...%n'%s'%n", nextLine);
+				requestBuilder.append(nextLine);
+			}
+
+			System.out.println("[App.parseRequestInformation()] Calling toString...");
+			result = requestBuilder.toString();
+		} finally {
+			if (requestReader != null) {
+				System.out.println("[App.parseRequestInformation()] closing requestReader...");
+				requestReader.close();
+			}
+		}
+
+		System.out.printf("[App.handleRequest()] Got request %s 💖%n", result);
+
+		return result;
 	}
 }
