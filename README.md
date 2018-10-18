@@ -65,6 +65,12 @@ jar tf .\target\javafun-1.0-SNAPSHOT.jar
 Set-ExecutionPolicy Bypass -Scope Process -Force; ./runProgram.ps1
 ```
 
+* Quick and dirty environment setup (using Chocolatey)
+
+```PowerShell
+choco install copyq git java netbeans -y
+```
+
 * Maven commands
   * `mvn clean` - Delete `./target` directory (previous builds)
   * `mvn install` - Create `./target` directory (new build)
