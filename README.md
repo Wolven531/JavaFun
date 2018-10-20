@@ -59,7 +59,13 @@ cmd /c mvn archetype:generate -DarchetypeArtifactId="archetype-quickstart-jdk8" 
 jar tf .\target\javafun-1.0-SNAPSHOT.jar
 ```
 
-* Run project from command line
+* Run project using command line (from repository root)
+
+```Cmd
+runProgram.cmd
+```
+
+* Run project using PowerShell (from repository root)
 
 ```PowerShell
 Set-ExecutionPolicy Bypass -Scope Process -Force; ./runProgram.ps1
