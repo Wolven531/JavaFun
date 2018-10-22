@@ -80,7 +80,7 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; ./runProgram.ps1
 * Quick and dirty environment setup (using Chocolatey)
 
 ```PowerShell
-choco install copyq git jdk11 netbeans -y
+choco install copyq git maven jdk11 netbeans -y
 ```
 
 * Maven commands
