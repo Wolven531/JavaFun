@@ -65,6 +65,12 @@ jar tf .\target\javafun-1.0-SNAPSHOT.jar
 runProgram.cmd
 ```
 
+* Make PowerShell scripts runnable
+
+```PowerShell
+Set-ExecutionPolicy Bypass -Scope LocalMachine
+```
+
 * Run project using PowerShell (from repository root)
 
 ```PowerShell
