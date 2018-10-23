@@ -33,12 +33,12 @@ import java.util.Hashtable;
 import java.util.Scanner;
 
 /**
- * // NOTE: Inspired by http://cs.lmu.edu/~ray/notes/javanetexamples/#date
+ * Inspired by http://cs.lmu.edu/~ray/notes/javanetexamples/#date
  *
- * // TODO: Generate tests like
+ * TODO: Generate tests like
  * https://netbeans.org/kb/docs/java/junit-intro.html#Exercise_24
  *
- * // TODO: Tutorial
+ * TODO: Tutorial
  * https://docs.oracle.com/javase/tutorial/networking/sockets/clientServer.html
  *
  * @author Anthony Williams
@@ -101,27 +101,9 @@ public final class SimpleServer {
 
 	/**
 	 *
-	 * @param clientConnection
+	 * @param responseWriter
 	 * @throws IOException
 	 */
-	// private void writeResponseInformation(Socket clientConnection) throws
-	// IOException {
-	// System.out.println("[App.writeResponseInformation()]");
-	// PrintWriter responseWriter = null;
-
-	// try {
-	// String responseText = new Date().toString();
-
-	// responseWriter = new PrintWriter(clientConnection.getOutputStream(), true);
-	// responseWriter.println(responseText);
-	// } finally {
-	// if (responseWriter != null) {
-	// System.out.println("[App.writeResponseInformation()] closing response
-	// writer...");
-	// responseWriter.close();
-	// }
-	// }
-	// }
 	private void writeResponseInformation(PrintWriter responseWriter) throws IOException {
 		try {
 			String responseText = new Date().toString();
@@ -136,61 +118,11 @@ public final class SimpleServer {
 	}
 
 	/**
-	 * // NOTE: getInetAddress = "/0:0:0:0:0:0:0:1"
 	 *
-	 * // NOTE: getLocalAddress = "/0:0:0:0:0:0:0:1"
-	 *
-	 * // NOTE: getLocalPort = "9090"
-	 *
-	 * // NOTE: getLocalSocketAddress = "/0:0:0:0:0:0:0:1:9090"
-	 *
-	 * // NOTE: getPort = "56967"
-	 *
-	 * // NOTE: getRemoteSocketAddress = "/0:0:0:0:0:0:0:1:56967"
-	 *
-	 * // NOTE: getTrafficClass = "0"
-	 *
-	 * @param clientConnection
+	 * @param requestReader
 	 * @return
 	 * @throws IOException
 	 */
-	// private String parseRequestInformation(Socket clientConnection) throws
-	// IOException {
-	// System.out.println("[App.parseRequestInformation()]");
-	// String result = "";
-	// StringBuilder requestBuilder = new StringBuilder("");
-	// Scanner requestReader = null;
-
-	// // try {
-	// System.out.println("[App.parseRequestInformation()] Creating reader...");
-	// requestReader = new Scanner(clientConnection.getInputStream());
-
-	// System.out.println("[App.parseRequestInformation()] Looping...");
-	// boolean shouldKeepReading = true;
-
-	// while (shouldKeepReading) {
-	// String nextLine = requestReader.nextLine();
-	// shouldKeepReading = !nextLine.equals("");
-
-	// System.out.printf("[App.parseRequestInformation()] Appending next
-	// line...%n'%s'%n", nextLine);
-	// requestBuilder.append(nextLine);
-	// }
-
-	// System.out.println("[App.parseRequestInformation()] Calling toString...");
-	// result = requestBuilder.toString();
-	// // } finally {
-	// // if (requestReader != null) {
-	// // System.out.println("[App.parseRequestInformation()] closing
-	// // requestReader...");
-	// // requestReader.close();
-	// // }
-	// // }
-
-	// System.out.printf("[App.handleRequest()] Got request %s 💖%n", result);
-
-	// return result;
-	// }
 	private String parseRequestInformation(Scanner requestReader) throws IOException {
 		StringBuilder requestBuilder = new StringBuilder("");
 		Dictionary<String, String> requestHeaders = new Hashtable<String, String>();
