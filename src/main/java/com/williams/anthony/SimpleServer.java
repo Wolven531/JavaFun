@@ -28,6 +28,8 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Date;
+import java.util.Dictionary;
+import java.util.Hashtable;
 import java.util.Scanner;
 
 /**
@@ -190,21 +192,47 @@ public final class SimpleServer {
 	// return result;
 	// }
 	private String parseRequestInformation(Scanner requestReader) throws IOException {
-		System.out.println("[App.parseRequestInformation()]");
 		StringBuilder requestBuilder = new StringBuilder("");
+		Dictionary<String, String> requestHeaders = new Hashtable<String, String>();
 		boolean shouldKeepReading = true;
+		int currentLine = 0;
+		String requestMethod = "";
+		String requestPath = "";
+		String requestVersion = "";
 		String result = "";
 
 		while (shouldKeepReading) {
 			String nextLine = requestReader.nextLine();
+			String[] lineParts = nextLine.split(" ");
 			shouldKeepReading = !nextLine.equals("");
 
+			if (currentLine == 0) {
+				if (lineParts.length > 0) {
+					requestMethod = lineParts[0].toUpperCase();
+				}
+				if (lineParts.length > 1) {
+					requestPath = lineParts[1];
+				}
+				if (lineParts.length > 2) {
+					requestVersion = lineParts[2];
+				}
+			} else {
+				// NOTE: ensure enough parts from line
+				if (lineParts.length > 1) {
+					// NOTE: ensure properly formatted
+					String headerName = lineParts[0].substring(0, lineParts[0].length() - 1);
+					String headerValue = lineParts[1];
+
+					requestHeaders.put(headerName, headerValue);
+				}
+			}
 			// System.out.printf("\t\t'%s'%n", nextLine);
 			requestBuilder.append(String.format("%s%n", nextLine));
+			currentLine++;
 		}
 
 		result = requestBuilder.toString();
-		System.out.printf("[App.handleRequest()] Got request %n%n%s", result);
+		System.out.printf("[App.handleRequest()] %s\t%s %s %n", requestVersion, requestMethod, requestPath);
 
 		return result;
 	}
