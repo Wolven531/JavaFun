@@ -100,6 +100,7 @@ public final class SimpleServer {
 	}
 
 	/**
+	 * Inspired by: https://jmarshall.com/easy/http/#responseline
 	 *
 	 * @param responseWriter
 	 * @throws IOException
