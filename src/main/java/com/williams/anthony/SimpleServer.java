@@ -105,6 +105,16 @@ public final class SimpleServer {
 	 * @throws IOException
 	 */
 	private void writeResponseInformation(PrintWriter responseWriter) throws IOException {
+		String httpVersion = "HTTP/1.1";
+		int statusCode = 200;
+		String statusText = "OK";
+		String responseHeaderLine = String.format("%s %d %s", httpVersion, statusCode, statusText);
+
+		// NOTE: start the response headers
+		responseWriter.println(responseHeaderLine);
+		// NOTE: end the response headers
+		responseWriter.println();
+
 		try {
 			String responseText = new Date().toString();
 
